@@ -224,12 +224,11 @@ def check_learning(data, cur_weights):
   '''
   UDLs = gen_URlist(data)
   winners = get_winners(data)
-  isHR = 'HR' in data.columns
 
   for i in range(len(UDLs)):
     cur_UR = UDLs[i] # loop through each UR
 
-    if isHR:
+    if 'HR' in data.columns:
       candidates = full_cands(data, cur_UR)
       surfaces = [convertXtoY(data, 'HR', form, 'SR') for form in candidates]
     else:
@@ -241,7 +240,10 @@ def check_learning(data, cur_weights):
     for id, sfc in enumerate(surfaces):
       if sfc==cur_winner:
         winner_ids.append(id)
-    viol_vec = -1*evaluate_SRs(data, full_cands(data, cur_UR)) #
+    if 'HR' in data.columns:
+      viol_vec = -1*evaluate_SRs(data, full_cands(data, cur_UR)) #
+    else:
+      viol_vec = -1*evaluate_SRs(data, gen_SR(data, cur_UR)) #
     harmonies = viol_vec.dot(cur_weights)
     eharmonies = np.exp(harmonies)
     Z = sum(eharmonies)
