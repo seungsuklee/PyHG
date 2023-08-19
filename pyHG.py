@@ -816,10 +816,11 @@ def tableau(data, cur_udl, weights, comparative, sorted):
     return c_tableau
     
 def tidy_tableaux(tableaux):
-  tableaux['UR'] = tableaux['UR'].drop_duplicates()
-  tableaux['SR'] = tableaux['SR'].drop_duplicates()
-  tableaux = tableaux.replace(np.nan, '-')
-  return tableaux
+  new_tableaux = tableaux.copy()
+  new_tableaux['UR'] = new_tableaux['UR'].drop_duplicates()
+  new_tableaux['SR'] = new_tableaux['SR'].drop_duplicates()
+  new_tableaux = new_tableaux.replace(np.nan, '-')
+  return new_tableaux
   
 def print_tableaux_pretty(data, weights, comparative, sorted, outputfilename):
   if 'HR' in data.columns:
