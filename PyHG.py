@@ -454,7 +454,6 @@ def solve_language(data):
       solutions.append(w_vec)
     else:
       print("no solution :(")
-    print(f"Number of solutions found: {len(Combo)}")
     return solutions
 
 ####################################################
