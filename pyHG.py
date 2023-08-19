@@ -854,9 +854,9 @@ def print_tableaux_pretty(data, weights, comparative, sorted, outputfilename):
     else:
       tab = pd.concat([tab, cur_tab]).reset_index(drop=True)
   if 'HR' in data.columns:
-    weights = [None]*6+list(weights)
+    weights = [None]*5+list(weights)+[None]
   else:
-    weights = [None]*5+list(weights)
+    weights = [None]*4+list(weights)+[None]
   tab.loc[-1] =  weights
   tab.index = tab.index + 1
   tab.sort_index(inplace=True)
