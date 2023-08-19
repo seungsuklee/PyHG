@@ -681,9 +681,10 @@ def print_solutions_pretty(data, ListOfSolutions, outputfilename):
   output_file.close()
  
 def HR_tableau(data, cur_udl, weights, comparative, sorted):
-  header = ['UR', 'SR', 'HR', 'Obs', 'H', 'p']
+  header = ['UR', 'SR', 'HR', 'Obs', 'p']
   ListOfConNames = get_constraint_names(data)
   header += ListOfConNames
+  header += ['H']
 
   winners = get_winners(data)
   candidates = full_cands(data, cur_udl)
@@ -705,9 +706,10 @@ def HR_tableau(data, cur_udl, weights, comparative, sorted):
       row.append(1) # observed
     else:
       row.append(0)
-    row.append(harmonies[id])
+    
     row.append(probs[id])
     row.extend(viol_mat[id])
+    row.append(harmonies[id])
     TableauRows.append(row)
     id+=1
   tableau = pd.DataFrame(TableauRows, columns = header)
@@ -729,13 +731,15 @@ def HR_tableau(data, cur_udl, weights, comparative, sorted):
       c_row.append(tableau.iloc[r]['HR']) # hr
       c_row.append(tableau.iloc[r]['Obs']) # obs
       if FIRST:
-        c_row.append(tableau.iloc[r]['H'])
         c_row.append(tableau.iloc[r]['p'])
       else:
-        c_row.append(tableau.iloc[r]['H']-optimal_H)
         c_row.append(tableau.iloc[r]['p']-optimal_p)
       v = tableau.iloc[r][ListOfConNames]*weights
       c_row.extend(v)
+      if FIRST:
+        c_row.append(tableau.iloc[r]['H'])
+      else:
+        c_row.append(tableau.iloc[r]['H']-optimal_H)
       TableauRows_comparative.append(c_row)
       FIRST=False
       id+=1
@@ -746,9 +750,10 @@ def HR_tableau(data, cur_udl, weights, comparative, sorted):
     return c_tableau
 
 def tableau(data, cur_udl, weights, comparative, sorted):
-  header = ['UR', 'SR', 'Obs', 'H', 'p']
+  header = ['UR', 'SR', 'Obs', 'p']
   ListOfConNames = get_constraint_names(data)
   header += ListOfConNames
+  header += ['H']
 
   winners = get_winners(data)
   candidates = gen_SR(data, cur_udl)
@@ -764,14 +769,13 @@ def tableau(data, cur_udl, weights, comparative, sorted):
     row = []
     row.append(cur_udl) # ur
     row.append(cand) # sr
-    # row.append(print_foot_pretty(cand)) # hr
     if cand in winners:
       row.append(1) # observed
     else:
       row.append(0)
-    row.append(harmonies[id])
     row.append(probs[id])
     row.extend(viol_mat[id])
+    row.append(harmonies[id])
     TableauRows.append(row)
     id+=1
   tableau = pd.DataFrame(TableauRows, columns = header)
@@ -792,13 +796,16 @@ def tableau(data, cur_udl, weights, comparative, sorted):
       c_row.append(tableau.iloc[r]['SR']) # sr
       c_row.append(tableau.iloc[r]['Obs']) # obs
       if FIRST:
-        c_row.append(tableau.iloc[r]['H'])
         c_row.append(tableau.iloc[r]['p'])
       else:
-        c_row.append(tableau.iloc[r]['H']-optimal_H)
         c_row.append(tableau.iloc[r]['p']-optimal_p)
       v = tableau.iloc[r][ListOfConNames]*weights
       c_row.extend(v)
+      if FIRST:
+        c_row.append(tableau.iloc[r]['H'])
+      else:
+        c_row.append(tableau.iloc[r]['H']-optimal_H)
+        
       TableauRows_comparative.append(c_row)
       FIRST=False
       id+=1
@@ -807,14 +814,21 @@ def tableau(data, cur_udl, weights, comparative, sorted):
       c_tableau.sort_values(by="p", ascending=False, inplace=True, ignore_index=True)
     c_tableau = c_tableau.round(2)
     return c_tableau
-
+    
+def tidy_tableaux(tableaux):
+  tableaux['UR'] = tableaux['UR'].drop_duplicates()
+  tableaux['SR'] = tableaux['SR'].drop_duplicates()
+  tableaux = tableaux.replace(np.nan, '-')
+  return tableaux
+  
 def print_tableaux_pretty(data, weights, comparative, sorted, outputfilename):
   if 'HR' in data.columns:
-    header = ['UR', 'SR', 'HR', 'Obs', 'H', 'p']
+    header = ['UR', 'SR', 'Obs', 'p', 'HR']
   else:
-    header = ['UR', 'SR', 'Obs', 'H', 'p']
+    header = ['UR', 'SR', 'Obs', 'p']
   ListOfConNames = get_constraint_names(data)
   header += ListOfConNames
+  header += ['H']
   UDLs = gen_URlist(data)
   if comparative:
     isComparative = '_comparative'
@@ -849,6 +863,9 @@ def print_tableaux_pretty(data, weights, comparative, sorted, outputfilename):
   tab = tab.round(2)
 
   output_file_name = outputfilename+isComparative+isSorted+'_output_tableaux.csv'
+  if sorted==False:
+    tab = tidy_tableaux(tab)
+    
   tab.to_csv(output_file_name, index=False)
   files.download(output_file_name)
   return tab
