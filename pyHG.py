@@ -850,4 +850,5 @@ def print_tableaux_pretty(data, weights, comparative, sorted, outputfilename):
 
   output_file_name = outputfilename+isComparative+isSorted+'_output_tableaux.csv'
   tab.to_csv(output_file_name, index=False)
-  return files.download(output_file_name)
+  files.download(output_file_name)
+  return tab
