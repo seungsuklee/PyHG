@@ -128,20 +128,23 @@ def prepare_data_for_learning(data):
   sr2datum = surface2data (dictionary for each SR (brandonian), how many HRs it has, as ranges)
   '''
   unique_underlying = gen_URlist(data)
-  isHR = 'HR' in data.columns
 
   unique_surface = []
   ListOfCandidates = []
-
-  for udl in unique_underlying:
-    unique_surface.extend(gen_SR(data, udl)) # list of all SR
-    ListOfCandidates.extend(full_cands(data, udl)) # list of all HR - Foot
+  if 'HR' in data.columns:
+    for udl in unique_underlying:
+      unique_surface.extend(gen_SR(data, udl)) # list of all SR
+      ListOfCandidates.extend(full_cands(data, udl)) # list of all HR - Foot
+  else:
+    for udl in unique_underlying:
+      unique_surface.extend(gen_SR(data, udl))
+      ListOfCandidates.extend(gen_SR(data, udl))
 
   # initiate dictionaries {ur:[]} and {sr:[]} in the list of candidates
   underlying2data = {form:[] for form in unique_underlying}
   surface2data = {form:[] for form in unique_surface}
 
-  if isHR: # list of candidates is unique surface
+  if 'HR' in data.columns: # list of candidates is unique surface
     for datum_index, form in enumerate(ListOfCandidates):
       underlying2data[convertXtoY(data, 'HR',form,'UR')].append(datum_index)
       surface2data[convertXtoY(data, 'HR',form,'SR')].append(datum_index) # this is for assigning violations
