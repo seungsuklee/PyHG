@@ -155,7 +155,7 @@ def prepare_data_for_learning(data):
     for datum_index, form in enumerate(unique_surface):
       underlying2data[convertXtoY(data, 'SR',form,'UR')].append(datum_index)
       surface2data[form].append(datum_index) # this is for assigning violations, each sr has 1 index
-    return unique_underlying, unique_surface, ListOfSurfaces, unique_surface, underlying2data, surface2data
+    return unique_underlying, unique_surface, ListOfCandidates, unique_surface, underlying2data, surface2data
 
 def get_normalized_probs(winners, surface2data, unique_underlying, data):
   '''
