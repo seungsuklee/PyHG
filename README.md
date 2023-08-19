@@ -8,3 +8,7 @@ It can also solve it analitically using the Linear Programming method (described
 You can try the program in the google colab demo. 
 
 https://colab.research.google.com/drive/1EVjM0BxYQBfLLi0B98iwGQ8p9ly-q8eJ?usp=sharing
+
+Acknowledgment
+This research and software development was supported by NSF BCS-2140826 awarded to the University of Massachusetts Amherst.
+
