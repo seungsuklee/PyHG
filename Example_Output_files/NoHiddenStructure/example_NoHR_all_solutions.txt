@@ -1,0 +1,9 @@
+There are 1 solution(s) found for example_NoHR
+------------------------------------------
+C3: 1.000
+C1: 1.000
+C2: 0.000
+
+xx2
+yy2
+zz2

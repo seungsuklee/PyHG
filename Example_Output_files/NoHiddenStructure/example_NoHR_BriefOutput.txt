@@ -1,0 +1,12 @@
+C1: 3.206
+C3: 2.666
+C2: 0.000
+
+------------------------------------------
+learning was successful! language example_NoHR learned in 4 epoch(s)
+------------------------------------------
+observerd form xx2: 0.96
+------------------------------------------
+observerd form yy2: 0.90
+------------------------------------------
+observerd form zz2: 0.90

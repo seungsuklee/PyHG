@@ -1,0 +1,21 @@
+C1: 3.206
+C3: 2.666
+Ca: 1.000
+Cb: 1.000
+Cc: 1.000
+C2: 0.000
+
+------------------------------------------
+learning was successful! language example_WithHR learned in 4 epoch(s)
+------------------------------------------
+observerd form xx2: 0.96
+for this SR...
+Best HR xx2b: 0.48
+------------------------------------------
+observerd form yy2: 0.90
+for this SR...
+Best HR yy2b: 0.45
+------------------------------------------
+observerd form zz2: 0.90
+for this SR...
+Best HR zz2c: 0.30
