@@ -367,35 +367,34 @@ def solve_language(data):
     for i in tqdm(range(len(UDLs))):
       if FIRST: # adding tableau for UR1 (First)
         cur_UR = UDLs[i]
-        # print('UR: ', convert2brandon(cur_UR, 'UR'))
+        print('UR: ', cur_UR)
 
         winner_SR = winners[i]
-        # print(f'Trying to make {convert2brandon(winner_SR)} optimal')
+        print(f'Trying to make {winner_SR} optimal')
 
         consistent_HRs = gen_HR(data, winner_SR)
-        # print(f'There are {len(consistent_HRs)} HRs consistent with that winner SR')
-
+        print(f'There are {len(consistent_HRs)} HRs consistent with that winner SR')
+        
         # go through the consistent HRs
         for hid in consistent_HRs:
           prob = LpProblem('',LpMinimize)
           prob = add_tableau(data, prob, cur_UR, hid, DictOfCons, alpha=1)
-          # for constr in constraints:
-          #   prob += (con_vars[constr]>=0, constr)
           prob += lpSum(DictOfCons)
           if prob.solve()==1:
             Combo.append([hid])
+            
             if i == len(UDLs)-1:
               w_vec = []
               for var in DictOfCons.values():
                 w_vec.append(var.value())
               solutions.append(w_vec)
-
-        # print('current number of Combos:', len(Combo))
+        print('current number of Combos:', len(Combo))
+        
         if len(Combo)==0:
           # print('Not representable')
           break
-        # for branch in Combo:
-        #   print(branch)
+        for branch in Combo:
+          print(branch)
         FIRST = False
 
       else:
