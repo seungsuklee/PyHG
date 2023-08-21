@@ -367,13 +367,13 @@ def solve_language(data):
     for i in tqdm(range(len(UDLs))):
       if FIRST: # adding tableau for UR1 (First)
         cur_UR = UDLs[i]
-        print('UR: ', cur_UR)
+        # print('UR: ', cur_UR)
 
         winner_SR = winners[i]
-        print(f'Trying to make {winner_SR} optimal')
+        # print(f'Trying to make {winner_SR} optimal')
 
         consistent_HRs = gen_HR(data, winner_SR)
-        print(f'There are {len(consistent_HRs)} HRs consistent with that winner SR')
+        # print(f'There are {len(consistent_HRs)} HRs consistent with that winner SR')
         
         # go through the consistent HRs
         for hid in consistent_HRs:
@@ -388,13 +388,13 @@ def solve_language(data):
               for var in DictOfCons.values():
                 w_vec.append(var.value())
               solutions.append(w_vec)
-        print('current number of Combos:', len(Combo))
+        # print('current number of Combos:', len(Combo))
         
         if len(Combo)==0:
           # print('Not representable')
           break
-        for branch in Combo:
-          print(branch)
+        # for branch in Combo:
+        #   print(branch)
         FIRST = False
 
       else:
