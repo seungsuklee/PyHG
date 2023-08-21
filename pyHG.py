@@ -384,11 +384,12 @@ def solve_language(data):
           prob += lpSum(DictOfCons)
           if prob.solve()==1:
             Combo.append([hid])
-            if len(UDLs)==1:
+            if i == len(UDLs)-1:
               w_vec = []
               for var in DictOfCons.values():
                 w_vec.append(var.value())
-              return w_vec
+              solutions.append(w_vec)
+
         # print('current number of Combos:', len(Combo))
         if len(Combo)==0:
           # print('Not representable')
@@ -444,7 +445,7 @@ def solve_language(data):
     print(f"Number of solutions found: {len(Combo)}")
     return solutions
 
-  else:
+  else: # no HR
     solutions= []
     prob = LpProblem('', LpMinimize)
 
